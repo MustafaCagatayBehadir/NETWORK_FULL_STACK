@@ -1,10 +1,6 @@
 # This makefile contains commands needed for developer work.
 # There shouldn't be complex logic here. If You need logic, write a shell or Python script and run it.
-#
-# (michalb) This Makefile is a work in progress.
-#
-# MANUAL:
-# Passing a parameter (e.g. PYTEST_ARGS) to a Makefile target(e.g. `test:`): `make test PYTEST_ARGS="-k happy_path"
+
 
 SHELL:=/bin/bash
 
