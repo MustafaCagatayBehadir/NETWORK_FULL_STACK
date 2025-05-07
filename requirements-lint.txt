@@ -1,0 +1,7 @@
+ansible-lint==4.2.0
+ruff==0.8.1
+mypy==1.15.0
+yamllint==1.17.0
+types-requests==2.27.27
+types-PyYAML==6.0.7
+pathlib==1.0.1

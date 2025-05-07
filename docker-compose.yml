@@ -1,0 +1,131 @@
+services:
+  netbox: &netbox
+    image: netbox_docker_custom
+    build:
+      context: .
+      dockerfile: docker/netbox/Dockerfile
+      target: netbox-dev
+    container_name: netbox-docker-dev
+    depends_on:
+      - postgres
+      - redis
+      - redis-cache
+    environment:
+      SKIP_SUPERUSER: "false"
+      SUPERUSER_NAME: "admin"
+      SUPERUSER_EMAIL: "admin@gmail.com"
+      SUPERUSER_PASSWORD: "admin"
+      DB_PASSWORD: "netbox"
+      DB_WAIT_DEBUG: 1
+      NETBOX_API_URL: "http://localhost:8080/"
+      NETBOX_API_TOKEN: "6f49c60111fabe29da4f1176f7c89fb6ef367297" # gitleaks:allow
+      NETBOX_PREPARE_TEST_ENV: True
+      NETBOX_CLEANUP_TEST_ENV: True
+    user: "root"
+    healthcheck:
+      test: curl -f http://localhost:8080/login/ || exit 1
+      start_period: 90s
+      timeout: 3s
+      interval: 15s
+    ports:
+      - 8080:8080
+      - 5679:5678
+    volumes:
+      - .:/opt/code:rw
+      - ./netbox_plugins:/plugins:rw
+      - netbox-docker-media-files:/opt/netbox/netbox/media:rw
+      - netbox-docker-reports-files:/opt/netbox/netbox/reports:rw
+      - netbox-docker-scripts-files:/opt/netbox/netbox/scripts:rw
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+  netbox-worker:
+    <<: *netbox
+    depends_on:
+      netbox:
+        condition: service_healthy
+    command:
+      - /opt/netbox/venv/bin/python
+      - /opt/netbox/netbox/manage.py
+      - rqworker
+    healthcheck:
+      test: ps -aux | grep -v grep | grep -q rqworker || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+    ports: []
+    container_name: netbox-docker-worker
+  netbox-housekeeping:
+    <<: *netbox
+    depends_on:
+      netbox:
+        condition: service_healthy
+    command:
+      - /opt/netbox/housekeeping.sh
+    healthcheck:
+      test: ps -aux | grep -v grep | grep -q housekeeping || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+    ports: []
+    container_name: netbox-docker-housekeeping
+
+  # postgres
+  postgres:
+    image: docker.io/postgres:16-alpine
+    healthcheck:
+      test: pg_isready -q -t 2 -d $$POSTGRES_DB -U $$POSTGRES_USER
+      start_period: 20s
+      timeout: 30s
+      interval: 10s
+      retries: 5
+    environment:
+      - POSTGRES_DB=netbox
+      - POSTGRES_USER=netbox
+      - POSTGRES_PASSWORD=netbox
+    ports:
+      - 5433:5432
+    container_name: netbox-docker-postgres
+
+  # redis
+  redis:
+    image: docker.io/valkey/valkey:8.0-alpine
+    command: &redis-command
+      - sh
+      - -c # this is to evaluate the $REDIS_PASSWORD from the env
+      - valkey-server --appendonly yes --requirepass $$REDIS_PASSWORD ## $$ because of docker-compose
+    healthcheck: &redis-healthcheck
+      test: '[ $$(valkey-cli --pass "$${REDIS_PASSWORD}" ping) = ''PONG'' ]'
+      start_period: 5s
+      timeout: 3s
+      interval: 1s
+      retries: 5
+    environment: &redis-environment
+      - REDIS_PASSWORD=mysecretpassword
+    volumes:
+      - netbox-docker-redis-data:/data
+    container_name: netbox-docker-redis
+
+  redis-cache:
+    image: docker.io/valkey/valkey:8.0-alpine
+    healthcheck: *redis-healthcheck
+    command:
+      - sh
+      - -c # this is to evaluate the $REDIS_PASSWORD from the env
+      - valkey-server --requirepass $$REDIS_PASSWORD ## $$ because of docker-compose
+    environment: *redis-environment
+    volumes:
+      - netbox-docker-redis-cache-data:/data
+    container_name: netbox-docker-redis-cache
+
+volumes:
+  netbox-docker-media-files:
+    driver: local
+  netbox-docker-postgres-data:
+    driver: local
+  netbox-docker-redis-cache-data:
+    driver: local
+  netbox-docker-redis-data:
+    driver: local
+  netbox-docker-reports-files:
+    driver: local
+  netbox-docker-scripts-files:
+    driver: local

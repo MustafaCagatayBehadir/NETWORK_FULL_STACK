@@ -1,0 +1,53 @@
+# Editors
+**/.idea
+.vscode/*
+!.vscode/*.shared.json
+*~undo-tree~
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pytest_cache
+
+# Distribution / packaging
+.Python
+.env
+env/
+.env/
+build/
+develop-eggs/
+dist/
+venv
+.venv
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+.hypothesis/
+
+# Other files
+**/*.swp
+**/*.log
+**/*.retry
+*.out
+.ansible/
+.bash_history
+.DS_Store

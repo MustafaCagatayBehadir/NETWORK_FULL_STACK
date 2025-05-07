@@ -1,0 +1,244 @@
+[tool.ruff]
+line-length = 120
+show-fixes = true
+target-version = "py310"
+include = [
+    "pyproject.toml",
+    "netbox_plugins/*.py",
+]
+
+lint.select = [
+    "ALL", # include all the rules, including new ones
+]
+
+lint.ignore = [
+    #### modules
+    "ANN", # flake8-annotations
+    "COM", # flake8-commas
+    "C90", # mccabe complexity
+    "DJ",  # django
+    "EXE", # flake8-executable
+    "PTH", # flake8-use-pathlib
+    "T10", # debugger
+    "TID", # flake8-tidy-imports
+    #### specific rules
+    "D100",    # ignore missing docs
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    "D200",
+    "D203",    # blank line before class body
+    "D205",
+    "D401",
+    "EM101",   # raw-string-in-exception ; do not remove this, compact code is preferred vs duplicate exception message
+    "EM102",   # f-string-in-exception ; do not remove this, compact code is preferred vs duplicate exception message
+    "PLR0913", # too many arguments to function call
+    "TRY003",  # external messages in exceptions are too verbose
+    "TD002",
+    "TD003",
+    "FIX002",  # too verbose descriptions of todos
+    "PLE1205", # too many arguments for logging
+    "ISC001",  # potential conflict with formatter
+    "EM103",   # Exception must not use a `.format()` string directly, assign to variable first
+
+    ### Temporary ignored, to be fixed in the future
+    "A001",    # variable shadowing a python builtin
+    "B006",    # Do not use mutable data structures for argument defaults
+    "B007",    # Loop control variable not used within loop body
+    "B020",    # Loop control variable `resource` overrides iterable it iterates
+    "B023",    # Function definition does not bind loop variable
+    "C401",    # unnecessary generator
+    "D301",    # Use r if any backslashes in a docstring
+    "D404",    # First word of the docstring should not be "This"
+    "D417",    # Missing argument descriptions in the docstring
+    "DTZ005",  # datetime without tz
+    "E501",    # line too long
+    "E712",    # Avoid equality comparisons to `True`
+    "E741",    # Ambiguous variable name: `l`
+    "ERA001",  # GFD-24236 commented-out code
+    "F403",    # star import
+    "F405",    # star import
+    "FBT001",  # Boolean type hint positional
+    "FBT002",  # Boolean type default positional
+    "FBT003",  # Boolean positional value in function call
+    "ISC003",  # Explicitly concatenated string should be implicitly concatenated
+    "N805",    # First argument of a method should be named `self`
+    "N813",    # Camelcase `AddressFamily` imported as lowercase `vrf_addressfamily`
+    "N818",    # exception name should be named with Error suffix
+    "N999",    # invalid module name
+    "PERF401", # Use a list comprehension to create a transformed list
+    "PERF402", # Use `list` or `list.copy` to create a copy of a list
+    "PLR0911", # too many return statements
+    "PLR0915", # too many statements
+    "PLR1704", # Redefining argument with the local name `resource`
+    "PLR1714", # merge multiple comparisons
+    "PLR2004", # Magic value used in comparison
+    "PLW2901", # Outer `for` loop variable `i` overwritten by inner `for` loop target
+    "PT009",   # assertEqual -> assert after moving to pytest
+    "PT011",   # `pytest.raises(Exception)` is too broad, set the `match` parameter or use a more specific exception
+    "PT012",   # multiple statements in pytest.raises
+    "PT027",   # assertRaises -> pytest.Raises after moving to pytest
+    "RET502",  # Do not implicitly `return None` in function able to return non-`None` value
+    "RET503",  # Missing explicit `return` at the end of function able to return non-`None` value
+    "RET504",  # unnecessary assignment before return statement
+    "RUF005",  # Consider `[*related.items, instance]` instead of concatenation
+    "RUF015",  # Prefer `next(iter(dest_devices.keys()))` over single element slice
+    "SIM103",  # return condition directly
+    "SIM105",  # supress instead of try except pass
+    "SIM108",  # Use ternary operator - check if it makes code more readible or not
+    "SIM910",  # Use `mock_data.get(url)`
+    "SLF001",  #  Private member accessed. If external package then add noqa
+    "T201",    # print in code. consider logging for app and check if test need it
+    "TD001",   # invalid todo
+    "TD004",   # invalid todo
+    "TD005",   # invalid todo
+    "TD006",   # invalid todo
+    "TRY002",  # create custom exception
+    "TRY300",  # Consider moving this statement to an `else` block
+    "UP030",   # Use implicit references for positional format fields
+    "UP031",   # Use format specifiers instead of percent format
+    "PT006",   # Wrong type passed to first argument of `@pytest.mark.parametrize`
+
+    ## Issues for discussion or later
+
+    "A002",    # argument shadowing a python builtin
+    "A003",    # -> dict if class constains method dict
+    "ARG001",  # Unused function argument
+    "ARG002",  # unused method argument - forced by netbox interfaces
+    "ARG003",  # unused class method argument
+    "ARG004",  # Unused static method argument: `kwargs`
+    "ARG005",  # Unused lambda argument: `f`
+    "B024",    # abstract class without abstract method
+    "B027",    # abstract class without abstract decorator
+    "BLE001",  # except Exception
+    "FA100",   # use from future to use | None instead of Optional
+    "FIX001",  # fixme in line
+    "G002",    # Logging statement uses `%`
+    "G004",    # Logging statement uses f-string
+    "INP001",  # implicit namespace package - add __init__
+    "N801",    # class name should use capWords
+    "N802",    # function name should be lowercase
+    "N803",    # argument name should be lowercase
+    "N806",    # # mixedCase issues in local scope
+    "N815",    # mixedCase, often used in models
+    "N816",    # mixedCase in global variables
+    "PERF203", # try except in for loop
+    "PLR0912", # too many branches
+    "RUF012",  # GFD-24219 mutable defaults in class definition
+    "S105",    # possible hardcoded password
+    "S110",    # try except pass without logging
+    "S112",    # try except continue without logging
+    "S113",    # requests use without timeout
+    "S307",    # eval used - possible insecure function
+    "S311",    # use non-standard pseudo-random generator
+    "S501",    # requests with verify=False
+    "S603",    # `subprocess` call: check for execution of untrusted input
+    "S701",    # jinja set autoescape=True due to XSS vulnerability
+    "SIM113",  # use enumerate
+    "TC001",   # import used only in typing - move to TYPE_CHECKING
+    "TC002",   # import used only in typing - move to TYPE_CHECKING
+    "TRY301",  # raise within try
+]
+
+lint.unfixable = [
+    # PT022 replace empty `yield` to empty `return`. Might be fixed with a combination of PLR1711
+    # In addition, it can't do anything with invalid typing annotations, protected by mypy.
+    "PT022",
+]
+[tool.ruff.lint.extend-per-file-ignores]
+# ANN201 return type for tests does not make sense
+# S101 use of assert in tests should be allowed
+"test_*.py" = ["ANN201", "S101"]
+"*_test.py" = ["ANN201", "S101"]
+
+[tool.ruff.lint.isort]
+known-third-party = ["netbox"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "netbox.settings"
+pythonpath = ["/opt/netbox/netbox"]
+python_files = ["test*.py", "*test.py"]
+addopts = ["--import-mode=append", "--no-migrations"]
+junit_suite_name = "Unit tests"
+
+[tool.coverage.run]
+omit = ["*/tests/*", "*/migrations/*"]
+source = [
+    "device_discovery",
+]
+
+[tool.coverage.report]
+exclude_also = [
+    "if __name__ == .__main__.:", # do not count code activating for CLI scripts
+    "if TYPE_CHECKING:",          # do not count code meant only to impact type checking
+    "def __repr__",               # do not count implementations of `repr()`
+    "@(abc\\.)?abstractmethod",   # do not count abstract base classes and abstract methods
+    "raise NotImplementedError",  # do not count generic exceptions raised by abstract classes
+]
+
+[tool.robocop]
+exclude = [
+    "missing-space-after-comment",
+    "could-be-test-tags",
+    "can-be-resource-file",
+    "ignored-data",
+    "underscore-in-keyword-name",
+    "file-too-long",
+]
+configure = [
+    "return_status:quality_gate:E=0:W=-1:I=-1", # TODO remove after all is fixed - rebuilding linter image bumped used RF version
+    "too-many-calls-in-keyword:max_calls:30",
+    "too-many-arguments:max_args:6",
+    "too-many-test-cases:max_testcases:100",
+]
+reports = ["rules_by_error_type"]
+
+# Options for running flake8 in local environments.
+#
+# Note that CI/CD is using ruff because it's way faster than flake8
+# so if you need to add some linter exceptions to CI/CD then look
+# at corresponding [tool.ruff.*] config sections.
+#
+# If you plan to use this then don't forgetto run:
+#
+#   pip install Flake8-pyproject
+#
+# otherwise flake8 will not pick up options from this file.
+[tool.flake8]
+ignore = [
+    "E501",  # line too long
+    "W503",  # line break before binary operator
+    "E712",  # comparison to true/false using ==
+    "E741",  # ambiguous variable name (l, O, I)
+]
+
+# Options for running pylint in local environments.
+#
+# Note that CI/CD is using ruff because it's way faster than pylint
+# so if you need to add some linter exceptions to CI/CD then look
+# at corresponding [tool.ruff.*] config sections.
+[tool.pylint.message_control]
+disable = [
+    "C0103",  # invalid name (doesn't conform to naming style)
+    "C0114",  # missing module docstring
+    "C0115",  # missing class docstring
+    "C0116",  # missing function or method docstring
+    "C0301",  # line too long
+    "C0302",  # too many lines in module
+    "R0911",  # too many return statements in a function
+    "R0912",  # too many branches in a function
+    "R0913",  # too many arguments in a function
+    "R0914",  # too many local variables in a function
+    "R0915",  # too many statements in a function
+    "R0916",  # too many boolean expressions in an if statement
+    "R0917",  # too many statements in a try/except block
+    "R1702",  # too many nested blocks
+]

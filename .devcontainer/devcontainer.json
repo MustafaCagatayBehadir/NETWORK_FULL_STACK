@@ -1,0 +1,43 @@
+{
+    "name": "NETWORK_FULL_STACK",
+    "dockerComposeFile": "../docker-compose.yml",
+    "service": "netbox",
+    "workspaceFolder": "/opt/code",
+    "shutdownAction": "stopCompose",
+    "features": {
+        "git": {
+            "version": "latest",
+            "ppa": false
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "streetsidesoftware.code-spell-checker",
+                "ms-python.python",
+                "ms-python.debugpy",
+                "charliermarsh.ruff",
+                "tamasfe.even-better-toml",
+                "redhat.vscode-xml",
+                "redhat.vscode-yaml",
+                "foxundermoon.shell-format",
+                "ms-azuretools.vscode-docker",
+                "eamodio.gitlens",
+                "GitLab.gitlab-workflow",
+                "yzhang.markdown-all-in-one",
+                "bierner.markdown-mermaid",
+                "DavidAnson.vscode-markdownlint",
+                "bierner.markdown-footnotes",
+                "Swellaby.workspace-config-plus",
+                "njpwerner.autodocstring",
+                "Gruntfuggly.todo-tree"
+            ],
+            "settings": {
+                "python.defaultInterpreterPath": "/opt/netbox/venv/bin/python",
+                "python.analysis.extraPaths": ["/opt/netbox/netbox"],
+                "autoDocstring.docstringFormat": "google",
+                "autoDocstring.includeExtendedSummary": true
+            }
+        }
+    }
+}
