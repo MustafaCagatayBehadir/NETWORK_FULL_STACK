@@ -17,5 +17,17 @@ class NetdisConfig(PluginConfig):
     version = "0.1.0"
     base_url = "netbox_netdis"
 
+    # Add custom buttons
+    plugin_buttons = {
+        "netbox_netdis.OnboardingTask": [
+            {
+                "text": "Run Sync",
+                "icon_class": "mdi mdi-refresh",
+                "url_name": "plugins:netbox_netdis:onboardingtask_sync",
+                "color": "green",
+            },
+        ],
+    }
+
 
 config = NetdisConfig

@@ -1,18 +1,19 @@
-from extras.plugins import PluginMenuButton, PluginMenuItem
-from utilities.choices import ButtonColorChoices
+from netbox.choices import ButtonColorChoices
+from netbox.plugins import PluginMenuButton, PluginMenuItem
 
-plugin_buttons = [
+onboardingtask_buttons = [
     PluginMenuButton(
-        link="plugins:netbox_netdis:netdis_add",
+        link="plugins:netbox_netdis:onboardingtask_add",
         title="Add",
         icon_class="mdi mdi-plus-thick",
+        color=ButtonColorChoices.GREEN,
     )
 ]
 
 menu_items = (
     PluginMenuItem(
-        link="plugins:netbox_netdis:netdis_list",
-        link_text="Netdis",
-        buttons=plugin_buttons,
+        link="plugins:netbox_netdis:onboardingtask_list",
+        link_text="Onboarding Task",
+        buttons=onboardingtask_buttons,
     ),
 )

@@ -1,19 +1,42 @@
+"""Django urlpatterns declaration for netbox_netdis plugin."""
+
 from django.urls import path
 from netbox.views.generic import ObjectChangeLogView
 
-from . import models, views
+from netbox_netdis import views
+from netbox_netdis.models import OnboardingTask
 
-
-urlpatterns = (
-    path("netdiss/", views.NetdisListView.as_view(), name="netdis_list"),
-    path("netdiss/add/", views.NetdisEditView.as_view(), name="netdis_add"),
-    path("netdiss/<int:pk>/", views.NetdisView.as_view(), name="netdis"),
-    path("netdiss/<int:pk>/edit/", views.NetdisEditView.as_view(), name="netdis_edit"),
-    path("netdiss/<int:pk>/delete/", views.NetdisDeleteView.as_view(), name="netdis_delete"),
+urlpatterns = [
     path(
-        "netdiss/<int:pk>/changelog/",
-        ObjectChangeLogView.as_view(),
-        name="netdis_changelog",
-        kwargs={"model": models.Netdis},
+        "onboardingtasks/",
+        views.OnboardingTaskListView.as_view(),
+        name="onboardingtask_list",
     ),
-)
+    path(
+        "onboardingtasks/add/",
+        views.OnboardingTaskEditView.as_view(),
+        name="onboardingtask_add",
+    ),
+    path(
+        "onboardingtask/<int:pk>/",
+        views.OnboardingTaskView.as_view(),
+        name="onboardingtask",
+    ),
+    path(
+        "onboardingtask/<int:pk>/edit/",
+        views.OnboardingTaskEditView.as_view(),
+        name="onboardingtask_edit",
+    ),
+    path(
+        "onboardingtask/<int:pk>/delete/",
+        views.OnboardingTaskDeleteView.as_view(),
+        name="onboardingtask_delete",
+    ),
+    path(
+        "onboardingtask/<int:pk>/changelog/",
+        ObjectChangeLogView.as_view(),
+        name="onboardingtask_changelog",
+        kwargs={"model": OnboardingTask},
+    ),
+    path("onboardingtask/<int:pk>/sync/", views.onboardingtask_sync, name="onboardingtask_sync"),
+]

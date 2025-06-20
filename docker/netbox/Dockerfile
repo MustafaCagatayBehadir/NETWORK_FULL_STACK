@@ -26,7 +26,7 @@ RUN echo "PLUGINS = ['netbox_netdis']" >> /etc/netbox/config/plugins.py && \
 
 # Copy and install plugin
 COPY pyproject.toml requirements* /opt/code/
-COPY ./netbox-plugins/netbox-netdis /opt/code/netbox-plugins/netbox-netdis
+COPY ./netbox-plugins /opt/code/netbox-plugins
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --no-compile -c /tmp/constraints.txt \
